@@ -43,9 +43,64 @@ This report identifies high-value Hugging Face projects for building a fully loc
 | **DeepSeek-R1-Distill-Qwen-7B** | 7B | ~6GB | Reasoning-focused distillation |
 
 ### GGUF Quantization Sources
-- **TheBloke** - 3,800+ quantized models
 - **bartowski** - Latest model quantizations
 - **QuantFactory** - Automated GGUF conversions
+- **mradermacher** - Comprehensive GGUF library
+
+---
+
+## 1B. UNCENSORED / UNALIGNED MODELS (No Third-Party Moderation)
+
+For research requiring unfiltered model responses without RLHF safety guardrails.
+
+### Abliterated Models (Safety Training Surgically Removed)
+
+| Model | Params | Base | Method |
+|-------|--------|------|--------|
+| **mlabonne/gemma-3-27b-it-abliterated** | 27B | Gemma-3 | Layerwise abliteration, 90%+ acceptance |
+| **huihui-ai/Qwen2.5-14B-Instruct-abliterated** | 14B | Qwen2.5 | Refusal direction removal |
+| **FailSpy/Llama-3-8B-Instruct-abliterated** | 8B | Llama-3 | Orthogonalization |
+| **mradermacher/DeepSeek-R1-Distill-Qwen-32B-Uncensored-GGUF** | 32B | DeepSeek-R1 | Full uncensoring |
+
+### Dolphin Series (Eric Hartford / Cognitive Computations)
+Trained from scratch without alignment - not abliterated, genuinely unaligned.
+
+| Model | Params | Base | Notes |
+|-------|--------|------|-------|
+| **cognitivecomputations/dolphin-2.9.3-mistral-7B-32k** | 7B | Mistral-v0.3 | 32k context, function calling, Apache 2.0 |
+| **cognitivecomputations/dolphin-2.9.2-qwen2-72b** | 72B | Qwen2 | Maximum capability |
+| **cognitivecomputations/dolphin-2.8-mistral-7b-v02** | 7B | Mistral | Proven stable |
+| **dphn/Dolphin3.0-Llama3.1-8B** | 8B | Llama-3.1 | Latest architecture |
+
+### Lexi Uncensored Series
+| Model | Params | Notes |
+|-------|--------|-------|
+| **Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2** | 8B | "Highly compliant with any request" |
+| **Orenguteng/Llama-3-8B-Lexi-Uncensored** | 8B | Original version |
+
+### Nous Research / Hermes (Research-Focused, Minimal Guardrails)
+| Model | Params | Notes |
+|-------|--------|-------|
+| **NousResearch/Hermes-3-Llama-3.1-8B** | 8B | Research-oriented, extensive capabilities |
+| **NousResearch/Hermes-2-Pro-Mistral-7B** | 7B | Function calling + minimal filtering |
+
+### Abliteration Technique
+The abliteration process identifies "refusal directions" in the model's hidden states and orthogonalizes them out. Key parameters:
+- **Refusal weight**: Typically 1.0-1.5
+- **Layer selection**: Can be applied to all layers or specific ones
+- **Result**: Model retains capabilities but loses trained refusal behaviors
+
+### Download Commands (Uncensored)
+```bash
+# Dolphin (recommended - trained uncensored, not post-hoc modified)
+huggingface-cli download cognitivecomputations/dolphin-2.9.3-mistral-7B-32k
+
+# Abliterated Gemma (high capability)
+huggingface-cli download mlabonne/gemma-3-27b-it-abliterated
+
+# Lexi Uncensored GGUF
+huggingface-cli download Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF
+```
 
 ---
 
@@ -227,6 +282,24 @@ Response → Emotion-aware TTS → Audio Output
 | Emotion (Text) | roberta-go_emotions | ~500MB |
 | Embeddings | bge-small-en-v1.5 | ~130MB |
 | **Total** | | **~16GB** |
+
+### Config U: "Uncensored Research" (16GB+ RAM, RTX 3060+)
+For unfiltered companion research without third-party moderation.
+
+| Component | Model | Size |
+|-----------|-------|------|
+| LLM | Dolphin-2.9.3-Mistral-7B-32k (GGUF Q5) | ~5GB |
+| LLM Alt | Llama-3.1-8B-Lexi-Uncensored-V2 (GGUF Q5) | ~5.5GB |
+| LLM Max | gemma-3-27b-it-abliterated (GGUF Q4) | ~16GB |
+| TTS | XTTS-v2 (voice cloned) | ~1.8GB |
+| STT | Whisper-large-v3-turbo | ~1.5GB |
+| VAD | Silero-VAD | ~2MB |
+| Emotion | wav2vec2-IEMOCAP + roberta-go_emotions | ~900MB |
+
+**Why Dolphin over Abliterated Models:**
+- Dolphin is trained from scratch without alignment - cleaner architecture
+- Abliterated models can have artifacts from the removal process
+- Dolphin has function calling and 32k context built-in
 
 ---
 
