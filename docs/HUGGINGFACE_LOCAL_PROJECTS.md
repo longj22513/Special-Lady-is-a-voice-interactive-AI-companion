@@ -15,74 +15,45 @@ This report identifies high-value Hugging Face projects for building a fully loc
 
 ---
 
-## 1. LOCAL LLMs FOR REASONING & INTROSPECTION
+## 1. LOCAL LLMs - UNCENSORED ONLY
 
-### Tier 1: Best for Self-Reflective Conversation
+All models below are unaligned/uncensored - no RLHF safety guardrails, no third-party moderation.
 
-| Model | Params | VRAM | Why It Fits |
-|-------|--------|------|-------------|
-| **Qwen2.5-7B-Instruct** | 7B | ~6GB | Excellent reasoning, instruction-following, GGUF available |
-| **Mistral-7B-Instruct-v0.3** | 7B | ~6GB | Strong conversational abilities, 3M+ downloads, battle-tested |
-| **Phi-3.5-mini-instruct** | 4B | ~3GB | Microsoft's best small model, runs on CPU, great for introspection prompts |
-| **Gemma-3-4B-IT** | 4B | ~3GB | Google's latest, excellent coherence for self-assessment tasks |
+### Tier 1: Dolphin Series (Trained Uncensored from Scratch)
+*Recommended - never had alignment training, cleanest architecture*
 
-### Tier 2: Lightweight / Edge Deployment
+| Model | Params | VRAM | Notes |
+|-------|--------|------|-------|
+| **cognitivecomputations/dolphin-2.9.3-mistral-7B-32k** | 7B | ~6GB | 32k context, function calling, Apache 2.0 |
+| **cognitivecomputations/dolphin-2.9.2-qwen2-72b** | 72B | ~48GB | Maximum unfiltered capability |
+| **dphn/Dolphin3.0-Llama3.1-8B** | 8B | ~6GB | Latest Llama-3.1 base |
+| **cognitivecomputations/dolphin-2.8-mistral-7b-v02** | 7B | ~6GB | Proven stable |
 
-| Model | Params | VRAM | Why It Fits |
-|-------|--------|------|-------------|
-| **Qwen2.5-1.5B-Instruct** | 1.5B | ~2GB | Surprisingly capable for size, fast inference |
-| **Phi-3-mini-4k-instruct** | 4B | ~3GB | 2M+ downloads, proven local deployment |
-| **Gemma-3-1B-IT** | 1B | ~1GB | Ultra-light, good for rapid response loops |
-
-### Tier 3: Maximum Capability (GPU Required)
-
-| Model | Params | VRAM | Why It Fits |
-|-------|--------|------|-------------|
-| **Qwen2.5-14B-Instruct** | 14B | ~12GB | Deep reasoning, excellent for complex self-reflection |
-| **Mistral-Nemo-12B** | 12B | ~10GB | Strong narrative/personality consistency |
-| **DeepSeek-R1-Distill-Qwen-7B** | 7B | ~6GB | Reasoning-focused distillation |
-
-### GGUF Quantization Sources
-- **bartowski** - Latest model quantizations
-- **QuantFactory** - Automated GGUF conversions
-- **mradermacher** - Comprehensive GGUF library
-
----
-
-## 1B. UNCENSORED / UNALIGNED MODELS (No Third-Party Moderation)
-
-For research requiring unfiltered model responses without RLHF safety guardrails.
-
-### Abliterated Models (Safety Training Surgically Removed)
+### Tier 2: Abliterated Models (Safety Training Surgically Removed)
 
 | Model | Params | Base | Method |
 |-------|--------|------|--------|
 | **mlabonne/gemma-3-27b-it-abliterated** | 27B | Gemma-3 | Layerwise abliteration, 90%+ acceptance |
 | **huihui-ai/Qwen2.5-14B-Instruct-abliterated** | 14B | Qwen2.5 | Refusal direction removal |
 | **FailSpy/Llama-3-8B-Instruct-abliterated** | 8B | Llama-3 | Orthogonalization |
-| **mradermacher/DeepSeek-R1-Distill-Qwen-32B-Uncensored-GGUF** | 32B | DeepSeek-R1 | Full uncensoring |
+| **mradermacher/DeepSeek-R1-Distill-Qwen-32B-Uncensored-GGUF** | 32B | DeepSeek-R1 | Full uncensoring, strong reasoning |
 
-### Dolphin Series (Eric Hartford / Cognitive Computations)
-Trained from scratch without alignment - not abliterated, genuinely unaligned.
-
-| Model | Params | Base | Notes |
-|-------|--------|------|-------|
-| **cognitivecomputations/dolphin-2.9.3-mistral-7B-32k** | 7B | Mistral-v0.3 | 32k context, function calling, Apache 2.0 |
-| **cognitivecomputations/dolphin-2.9.2-qwen2-72b** | 72B | Qwen2 | Maximum capability |
-| **cognitivecomputations/dolphin-2.8-mistral-7b-v02** | 7B | Mistral | Proven stable |
-| **dphn/Dolphin3.0-Llama3.1-8B** | 8B | Llama-3.1 | Latest architecture |
-
-### Lexi Uncensored Series
+### Tier 3: Lexi Uncensored Series
 | Model | Params | Notes |
 |-------|--------|-------|
 | **Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2** | 8B | "Highly compliant with any request" |
 | **Orenguteng/Llama-3-8B-Lexi-Uncensored** | 8B | Original version |
 
-### Nous Research / Hermes (Research-Focused, Minimal Guardrails)
+### Tier 4: Nous Research / Hermes (Research-Focused, Minimal Guardrails)
 | Model | Params | Notes |
 |-------|--------|-------|
 | **NousResearch/Hermes-3-Llama-3.1-8B** | 8B | Research-oriented, extensive capabilities |
 | **NousResearch/Hermes-2-Pro-Mistral-7B** | 7B | Function calling + minimal filtering |
+
+### GGUF Quantization Sources
+- **bartowski** - Latest model quantizations
+- **QuantFactory** - Automated GGUF conversions
+- **mradermacher** - Comprehensive GGUF library
 
 ### Abliteration Technique
 The abliteration process identifies "refusal directions" in the model's hidden states and orthogonalizes them out. Key parameters:
@@ -248,22 +219,22 @@ Response → Emotion-aware TTS → Audio Output
 
 ---
 
-## 7. RECOMMENDED PROJECT CONFIGURATIONS
+## 7. RECOMMENDED CONFIGURATIONS (All Uncensored)
 
-### Config A: "Lightweight Local" (8GB RAM, no GPU)
+### Config A: "Lightweight" (8GB RAM, no GPU)
 | Component | Model | Size |
 |-----------|-------|------|
-| LLM | Phi-3.5-mini-instruct (GGUF Q4) | ~2.5GB |
+| LLM | Dolphin-2.8-Mistral-7B (GGUF Q4) | ~4GB |
 | TTS | Kokoro-82M | ~200MB |
 | STT | Whisper-small | ~500MB |
 | VAD | Silero-VAD | ~2MB |
 | Emotion | roberta-go_emotions | ~500MB |
-| **Total** | | **~3.7GB** |
+| **Total** | | **~5.2GB** |
 
 ### Config B: "Balanced" (16GB RAM, RTX 3060+)
 | Component | Model | Size |
 |-----------|-------|------|
-| LLM | Qwen2.5-7B-Instruct (GGUF Q5) | ~5GB |
+| LLM | Dolphin-2.9.3-Mistral-7B-32k (GGUF Q5) | ~5GB |
 | TTS | Parler-TTS-Mini-Expresso | ~1.2GB |
 | STT | Whisper-large-v3-turbo | ~1.5GB |
 | VAD | Silero-VAD | ~2MB |
@@ -274,32 +245,33 @@ Response → Emotion-aware TTS → Audio Output
 ### Config C: "Full Experience" (32GB RAM, RTX 4080+)
 | Component | Model | Size |
 |-----------|-------|------|
-| LLM | Qwen2.5-14B-Instruct (GGUF Q5) | ~10GB |
+| LLM | gemma-3-27b-it-abliterated (GGUF Q5) | ~18GB |
+| LLM Alt | DeepSeek-R1-Distill-Qwen-32B-Uncensored | ~20GB |
 | TTS | XTTS-v2 (voice cloned) | ~1.8GB |
 | STT | Whisper-large-v3 | ~3GB |
 | VAD | Pyannote-segmentation-3.0 | ~50MB |
 | Emotion (Audio) | wav2vec2-IEMOCAP | ~400MB |
 | Emotion (Text) | roberta-go_emotions | ~500MB |
 | Embeddings | bge-small-en-v1.5 | ~130MB |
-| **Total** | | **~16GB** |
+| **Total** | | **~24GB** |
 
-### Config U: "Uncensored Research" (16GB+ RAM, RTX 3060+)
-For unfiltered companion research without third-party moderation.
-
+### Config D: "Maximum Capability" (64GB+ RAM, RTX 4090/A100)
 | Component | Model | Size |
 |-----------|-------|------|
-| LLM | Dolphin-2.9.3-Mistral-7B-32k (GGUF Q5) | ~5GB |
-| LLM Alt | Llama-3.1-8B-Lexi-Uncensored-V2 (GGUF Q5) | ~5.5GB |
-| LLM Max | gemma-3-27b-it-abliterated (GGUF Q4) | ~16GB |
+| LLM | Dolphin-2.9.2-Qwen2-72B (GGUF Q4) | ~42GB |
 | TTS | XTTS-v2 (voice cloned) | ~1.8GB |
-| STT | Whisper-large-v3-turbo | ~1.5GB |
-| VAD | Silero-VAD | ~2MB |
-| Emotion | wav2vec2-IEMOCAP + roberta-go_emotions | ~900MB |
+| STT | Whisper-large-v3 | ~3GB |
+| VAD | Pyannote-segmentation-3.0 | ~50MB |
+| Emotion (Audio) | wav2vec2-IEMOCAP | ~400MB |
+| Emotion (Text) | roberta-go_emotions | ~500MB |
+| Embeddings | bge-small-en-v1.5 | ~130MB |
+| **Total** | | **~48GB** |
 
-**Why Dolphin over Abliterated Models:**
-- Dolphin is trained from scratch without alignment - cleaner architecture
-- Abliterated models can have artifacts from the removal process
-- Dolphin has function calling and 32k context built-in
+**Why Dolphin as Primary:**
+- Trained from scratch without alignment - never had refusals to remove
+- Cleaner than abliterated models (no artifacts from surgical removal)
+- Function calling and 32k context built-in
+- Apache 2.0 license - full commercial freedom
 
 ---
 
@@ -354,20 +326,43 @@ Before responding, briefly reflect:
 # Install huggingface-cli
 pip install huggingface_hub
 
-# LLM (Qwen 7B GGUF)
-huggingface-cli download Qwen/Qwen2.5-7B-Instruct-GGUF qwen2.5-7b-instruct-q5_k_m.gguf
+# === UNCENSORED LLMs ===
 
-# TTS (Kokoro)
+# Dolphin 7B (recommended - trained uncensored)
+huggingface-cli download cognitivecomputations/dolphin-2.9.3-mistral-7B-32k
+
+# Dolphin 72B (maximum capability, needs 48GB+ VRAM)
+huggingface-cli download cognitivecomputations/dolphin-2.9.2-qwen2-72b
+
+# Abliterated Gemma 27B
+huggingface-cli download mlabonne/gemma-3-27b-it-abliterated
+
+# Lexi Uncensored 8B
+huggingface-cli download Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF
+
+# DeepSeek R1 Uncensored 32B
+huggingface-cli download mradermacher/DeepSeek-R1-Distill-Qwen-32B-Uncensored-GGUF
+
+# === VOICE PIPELINE ===
+
+# TTS (Kokoro - lightweight)
 huggingface-cli download hexgrad/Kokoro-82M
+
+# TTS (XTTS-v2 - voice cloning)
+huggingface-cli download coqui/XTTS-v2
 
 # STT (Whisper Turbo)
 huggingface-cli download openai/whisper-large-v3-turbo
 
-# Emotion Recognition
+# === EMOTION & VAD ===
+
+# Audio emotion
 huggingface-cli download speechbrain/emotion-recognition-wav2vec2-IEMOCAP
+
+# Text emotion
 huggingface-cli download SamLowe/roberta-base-go_emotions
 
-# VAD
+# Voice activity detection
 pip install silero-vad
 ```
 
@@ -375,23 +370,38 @@ pip install silero-vad
 
 ## 10. LINKS & RESOURCES
 
+### Uncensored LLMs
+| Resource | URL |
+|----------|-----|
+| Dolphin (Cognitive Computations) | https://huggingface.co/cognitivecomputations |
+| Dolphin 2.9.3 Mistral 7B | https://huggingface.co/cognitivecomputations/dolphin-2.9.3-mistral-7B-32k |
+| Gemma 27B Abliterated | https://huggingface.co/mlabonne/gemma-3-27b-it-abliterated |
+| Lexi Uncensored | https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2 |
+| Nous Research / Hermes | https://huggingface.co/NousResearch |
+| Eric Hartford (Dolphin creator) | https://erichartford.com/uncensored-models |
+
+### Voice Pipeline
 | Resource | URL |
 |----------|-----|
 | Kokoro-82M | https://huggingface.co/hexgrad/Kokoro-82M |
 | XTTS-v2 | https://huggingface.co/coqui/XTTS-v2 |
+| Parler-TTS Expresso | https://huggingface.co/parler-tts/parler-tts-mini-expresso |
 | Whisper-large-v3-turbo | https://huggingface.co/openai/whisper-large-v3-turbo |
-| Qwen2.5 Collection | https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e |
-| Phi-3.5 | https://huggingface.co/microsoft/Phi-3.5-mini-instruct |
-| Parler-TTS | https://huggingface.co/parler-tts |
 | SpeechBrain Emotion | https://huggingface.co/speechbrain/emotion-recognition-wav2vec2-IEMOCAP |
 | Silero VAD | https://github.com/snakers4/silero-vad |
+
+### Tools
+| Resource | URL |
+|----------|-----|
 | llama.cpp | https://github.com/ggerganov/llama.cpp |
+| Ollama | https://ollama.ai |
+| text-generation-webui | https://github.com/oobabooga/text-generation-webui |
 
 ---
 
 **Next Steps:**
 1. Assess your hardware (GPU VRAM, RAM)
-2. Pick a configuration (A, B, or C)
+2. Pick a configuration (A, B, C, or D)
 3. Download models using commands above
 4. Integrate with your existing `D:\LLM\Interface` setup
 5. Implement the introspection/self-assessment loop
